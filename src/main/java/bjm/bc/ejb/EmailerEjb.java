@@ -67,4 +67,25 @@ public class EmailerEjb implements EmailerEjbLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    @Override
+    public void sendExpensePartyAccountOverdrawnEmail(ExpenseParty ep) throws MessagingException {
+        MimeMessage mimeMessage = new MimeMessage(session);
+        mimeMessage.setSubject("Warning - Account is overdrawn!!");
+        Multipart multipart = new MimeMultipart();
+        StringBuilder htmlMsg = new StringBuilder("<h2>Dear, "+ep.getName()+ "</h2>");
+        htmlMsg.append("<p>\"Just to let you know that your Account is overdrawn. Please take action urgently to top it up.\\n\\n\"</p>");
+        htmlMsg.append("<p>Best Wishes, <br/>www.bjmbc.net Admin</p>");
+        MimeBodyPart htmlPart = new MimeBodyPart();
+        try {
+            
+            htmlPart.setContent( htmlMsg.toString(), "text/html; charset=utf-8" );
+            multipart.addBodyPart(htmlPart);
+            mimeMessage.setContent(multipart);
+            Transport.send(mimeMessage);
+            LOGGER.info("Sent message successfully....");
+        } catch (MessagingException ex) {
+            Logger.getLogger(EmailerEjb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

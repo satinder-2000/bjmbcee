@@ -7,6 +7,7 @@ package bjm.bc.ejb;
 import bjm.bc.model.ExpenseParty;
 import bjm.bc.model.RevenueParty;
 import jakarta.ejb.Local;
+import jakarta.mail.MessagingException;
 
 /**
  *
@@ -20,5 +21,7 @@ public interface EmailerEjbLocal {
     public void sendExpensePartyRegistrationEmail(ExpenseParty ep);
     
     public void sendAccessCreatedEmail(String email);
+    
+    public void sendExpensePartyAccountOverdrawnEmail(ExpenseParty ep) throws MessagingException;
 
 }
